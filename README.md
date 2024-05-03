@@ -58,13 +58,14 @@
 ## 安装
 
 ~~~
-composer install
+git clone git@github.com:fanqingxuan/tp8-skeleton.git
 ~~~
 
 启动服务
 
 ~~~
-cd tp
+cd tp8-skeleton
+composer install
 php think run
 ~~~
 
