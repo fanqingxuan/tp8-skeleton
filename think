@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+namespace think;
+
+use extend\core\Application;
+
+// 命令行入口文件
+// 加载基础文件
+require __DIR__ . '/vendor/autoload.php';
+
+// 应用初始化
+$app = new Application();
+
+// 加载自定义command
+$file_list = glob($app->getAppPath()."command/*.php");
+$path = realpath(__DIR__).DIRECTORY_SEPARATOR;
+$command_list = array_map(function($file) use ($path) {
+    return str_replace(
+        [$path, '/', '.php'],
+        ['','\\', ''],
+        $file
+    );
+},$file_list);
+
+if($command_list) {
+    $app->console->addCommands($command_list);
+}
+
+$app->console->run();
