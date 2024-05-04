@@ -18,5 +18,10 @@ Route::post('hello/test', 'index/test');
 // Route::get('hello/:name', 'index/hello');
 
 Route::miss(function () {
-    return '404';
+    
+    return json([
+        'code' => 404,
+        'msg' => '页面不存在',
+        'data' => null
+    ])->code(404);
 });
