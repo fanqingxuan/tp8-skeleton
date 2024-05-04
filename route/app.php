@@ -13,6 +13,10 @@ use think\facade\Route;
 Route::get('think', function () {
     return 'hello,ThinkPHP6!';
 });
-Route::get('hello/test', 'index/test');
+Route::post('hello/test', 'index/test');
 
-Route::get('hello/:name', 'index/hello');
+// Route::get('hello/:name', 'index/hello');
+
+Route::miss(function () {
+    return '404';
+});

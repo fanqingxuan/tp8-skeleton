@@ -41,7 +41,7 @@ return [
 
         'file' => [
             // 日志记录方式
-            'type'           => '\extend\MYFileLog',
+            'type'           => '\extend\core\MYFileLog',
             // 日志保存目录
             'path'           => '',
             // 单文件日志写入
