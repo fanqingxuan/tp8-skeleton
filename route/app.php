@@ -8,20 +8,20 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+use extend\Result;
 use think\facade\Route;
 
 Route::get('think', function () {
     return 'hello,ThinkPHP6!';
 });
-Route::post('hello/test', 'index/test');
+Route::get('hello/test', 'index/test');
 
 // Route::get('hello/:name', 'index/hello');
 
+Route::get("/list","index/list");
+
 Route::miss(function () {
     
-    return json([
-        'code' => 404,
-        'msg' => '页面不存在',
-        'data' => null
-    ])->code(404);
+    return json(Result::fail("页面不存在",404)->toArray())->code(404);
 });

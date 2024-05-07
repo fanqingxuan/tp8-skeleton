@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace extend;
 
+use consts\Response;
 use think\App;
 use think\exception\ValidateException;
 use think\response\Json;
@@ -92,19 +93,15 @@ abstract class Controller
         return $v->failException(true)->check($data);
     }
 
-    protected function ok($data, string $msg = '操作成功'):Json {
-        return $this->result($data, $msg, 200);
+    protected function ok($data):Json {
+        return json(Result::ok($data)->toArray());
     }
 
-    protected function error(string $msg, $data = null):Json {
-        return $this->result($data, $msg, 1);
+    protected function fail(string $message,int $code = Result::FAIL_CODE):Json {
+        return json(Result::fail($message, $code)->toArray());
     }
 
-    protected function result($data, string $msg, int $code):Json {
-        return json([
-            'code' => $code,
-            'msg' => $msg,
-            'data' => $data
-        ]);
+    protected function result(Result $result):Json {
+        return json($result->toArray());
     }
 }

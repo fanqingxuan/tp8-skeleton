@@ -5,6 +5,7 @@ namespace app\controller;
 use app\service\HelloService;
 use extend\Controller;
 use extend\MYLog;
+use extend\Result;
 use think\facade\Log;
 
 class Index extends Controller
@@ -26,5 +27,9 @@ class Index extends Controller
         MYLog::info("info标题","测试了");
         MYLog::debug("debug标题",'测试debug this isdebug');
         return $this->ok($helloService->getUserList());
+    }
+
+    public function list() {
+        return $this->fail("操作失败");
     }
 }

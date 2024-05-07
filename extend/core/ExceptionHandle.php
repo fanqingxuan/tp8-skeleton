@@ -2,6 +2,7 @@
 namespace extend\core;
 
 use Exception;
+use extend\Result;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
@@ -74,11 +75,7 @@ class ExceptionHandle extends Handle
         if ($this->app->isDebug()) {
             return parent::render($request, $e);
         }
-        return json([
-            'code' => 500,
-            'msg' => '服务器内部错误',
-            'data' => null
-        ])->code(500);
+        return json(Result::fail('服务器内部错误',500))->code(500);
     }
     
 }

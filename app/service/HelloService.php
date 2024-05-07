@@ -8,7 +8,6 @@ use app\model\User;
 class HelloService
 {
     public function getUserList() {
-        User::where();
         return [
             ['id' => 1, 'name' => 'thinkphp'],
             ['id' => 2, 'name' => 'hyperf'],
