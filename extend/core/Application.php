@@ -30,6 +30,9 @@ class Application extends ThinkApp {
         }
         parent::load();
 
+        if (is_file($this->getConfigPath() . 'event.php')) {
+            $this->event->listenEvents(include $this->getConfigPath() . 'event.php');
+        }
         if (is_file($this->getConfigPath() . 'provider.php')) {
             $providers_list = include $this->getConfigPath() . 'provider.php';
             foreach ($providers_list as $provider) {

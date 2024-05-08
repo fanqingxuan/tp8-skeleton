@@ -12,6 +12,8 @@
 use extend\Result;
 use think\facade\Route;
 
+Route::get('/','index/index');
+
 Route::get('think', function () {
     return 'hello,ThinkPHP6!';
 });
@@ -22,6 +24,5 @@ Route::get('hello/test', 'index/test');
 Route::get("/list","index/list");
 
 Route::miss(function () {
-    
     return json(Result::fail("页面不存在",404)->toArray())->code(404);
 });

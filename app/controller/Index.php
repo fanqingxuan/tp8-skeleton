@@ -2,6 +2,8 @@
 
 namespace app\controller;
 
+use app\event\Hello;
+use app\model\User;
 use app\service\HelloService;
 use extend\Controller;
 use extend\MYLog;
@@ -12,6 +14,7 @@ class Index extends Controller
 {
     public function index()
     {
+        event(Hello::class,[new User(),5555]);
         return  $this->ok("hello world");
     }
 

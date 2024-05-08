@@ -75,7 +75,7 @@ class ExceptionHandle extends Handle
         if ($this->app->isDebug()) {
             return parent::render($request, $e);
         }
-        return json(Result::fail('服务器内部错误',500))->code(500);
+        return json(Result::fail('服务器内部错误',500)->toArray())->code(500);
     }
     
 }
