@@ -12,6 +12,5 @@ class Hello
      */
     public function handle($event)
     {
-        dd($this,$event);
     }
 }

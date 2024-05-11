@@ -14,7 +14,7 @@ class Result {
 
     private function __clone(){}
 
-    public static function ok(mixed $data = null,$message='操作成功',$code=self::OK_CODE):static
+    public static function Ok(mixed $data = null,$message='操作成功',$code=self::OK_CODE):static
     {
         $obj = new static;
         $obj->code = $code;
@@ -23,7 +23,7 @@ class Result {
         return $obj;
     }
     
-    public static function fail($message,$code=self::FAIL_CODE):static
+    public static function Fail($message,$code=self::FAIL_CODE):static
     {
         $obj = new static;
         $obj->code = $code;

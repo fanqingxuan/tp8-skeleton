@@ -8,6 +8,7 @@ use app\service\HelloService;
 use extend\Controller;
 use extend\MYLog;
 use extend\Result;
+use think\facade\Db;
 use think\facade\Log;
 
 class Index extends Controller

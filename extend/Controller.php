@@ -94,11 +94,11 @@ abstract class Controller
     }
 
     protected function ok($data):Json {
-        return json(Result::ok($data)->toArray());
+        return json(Result::Ok($data)->toArray());
     }
 
     protected function fail(string $message,int $code = Result::FAIL_CODE):Json {
-        return json(Result::fail($message, $code)->toArray());
+        return json(Result::Fail($message, $code)->toArray());
     }
 
     protected function result(Result $result):Json {
