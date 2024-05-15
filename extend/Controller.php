@@ -3,7 +3,11 @@ declare (strict_types = 1);
 
 namespace extend;
 
-use consts\Response;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
+use RuntimeException;
 use think\App;
 use think\exception\ValidateException;
 use think\response\Json;
@@ -93,11 +97,32 @@ abstract class Controller
         return $v->failException(true)->check($data);
     }
 
-    protected function ok($data):Json {
-        return json(Result::Ok($data)->toArray());
+
+    private function createData($resource,$transformClass='',$isCollection=true) {
+        if(!$transformClass) {
+            return $resource;
+        }
+        if(!class_exists($transformClass)) {
+            throw new RuntimeException('transformClass类'.$transformClass.'不存在');
+        }
+        if(!is_subclass_of($transformClass,TransformerAbstract::class)) {
+            throw new RuntimeException('transformClass类'.$transformClass.'必须继承 TransformerAbstract');
+        }
+        if($isCollection) {
+            $resource = new Collection($resource,app()->make($transformClass));
+        } else {
+            $resource = new Item($resource,app()->make($transformClass));
+        }
+        $fractal = new Manager();
+        $fractal->setSerializer(new ArraySerializer());
+        return $fractal->createData($resource)->toArray();
     }
 
-    protected function fail(string $message,int $code = Result::FAIL_CODE):Json {
+    protected function Ok($resource,$transformClass='',$isCollection=true):Json {
+        return json(Result::Ok($this->createData($resource,$transformClass,$isCollection))->toArray());
+    }
+
+    protected function Fail(string $message,int $code = Result::FAIL_CODE):Json {
         return json(Result::Fail($message, $code)->toArray());
     }
 

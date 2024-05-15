@@ -1,0 +1,17 @@
+<?php
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use League\Fractal\TransformerAbstract;
+
+class {%className%} extends TransformerAbstract
+{
+    public function transform($model)
+    {
+        // TODO
+        return [
+            
+        ];
+    }
+}

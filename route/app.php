@@ -13,6 +13,8 @@ use extend\Result;
 use think\facade\Route;
 
 Route::get('/','index/index');
+Route::get('/hello','index/hello');
+Route::get('/show','index/show');
 
 Route::get('think', function () {
     return 'hello,ThinkPHP6!';

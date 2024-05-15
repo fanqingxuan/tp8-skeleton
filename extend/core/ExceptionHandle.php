@@ -75,6 +75,9 @@ class ExceptionHandle extends Handle
         if ($this->app->isDebug()) {
             return parent::render($request, $e);
         }
+        if ($e instanceof HttpException && $e->getStatusCode() == 404) {
+            return json(Result::Fail('路由不存在',404)->toArray())->code(404);
+        }
         return json(Result::Fail('服务器内部错误',500)->toArray())->code(500);
     }
     

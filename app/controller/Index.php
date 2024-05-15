@@ -5,6 +5,8 @@ namespace app\controller;
 use app\event\Hello;
 use app\model\User;
 use app\service\HelloService;
+use app\transformer\UserItemTransformer;
+use app\transformer\UserTransformer;
 use extend\Controller;
 use extend\MYLog;
 use extend\Result;
@@ -15,14 +17,35 @@ class Index extends Controller
 {
     public function index()
     {
-        event(Hello::class,[new User(),5555]);
-        return  $this->ok("hello world");
+        // event(Hello::class,[new User(),5555]);
+        return  $this->Ok("hello world");
     }
 
     public function hello($name = 'ThinkPHP8')
     {
         MYLog::info("hello world",[11,22,33,44]);
-        return 'hello,' . $name;
+        return $this->Ok([1,2,3,3,5]);
+    }
+
+    public function show() {
+        $user = [
+            'id'=>1,
+            'name'=>'thinkphp',
+            'age'=>18,
+            'address'=>'beijing',
+            'hobby'=>['football','basketball'],
+        ];
+        return $this->Ok($user,UserItemTransformer::class,false);
+    }
+
+    public function list()
+    {
+        $userlist = [
+            ['id'=>1,'name'=>'thinkphp','age'=>18],
+            ['id'=>2,'name'=>'hyperf','age'=>19],
+            ['id'=>3,'name'=>'swoole','age'=>20],
+        ];
+        return $this->Ok($userlist,UserTransformer::class);
     }
 
     public function test(HelloService $helloService)
@@ -33,7 +56,5 @@ class Index extends Controller
         return $this->ok($helloService->getUserList());
     }
 
-    public function list() {
-        return $this->fail("操作失败");
-    }
+    
 }

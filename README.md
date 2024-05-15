@@ -10,6 +10,7 @@
 - model/
 - service/
 - provider/
+- transformer/
   
 ## 优化清单
 - 日志
@@ -41,8 +42,9 @@
 - 控制器
   - 去掉了`app/BaseController.php`文件
   - 添加了`extend/Controller.php`文件
-    - 增加`ok($data, string $msg = '操作成功')`方法,方法返回code、message、data三个字段的结构化json响应
+    - 增加`ok($data)`方法,方法返回code、message、data三个字段的结构化json响应
     - 增加`error(string $msg, $data = null)`方法,方法返回code、message、data三个字段的结构化json响应
+    - 增加了返回固定格式的响应结构的`transformer`层，便于更好的维护代码结构和分层
 - 异常
   - 优化了异常日志的记录内容
   - 非debug模式时，返回包含code、message、data三个字段的结构化json结构
@@ -52,6 +54,7 @@
   - 添加了`config/middleware.php`文件，用于声明全局中间件
 - 其它
   - `php think make:service`用于快速生成业务类
+  - `php think make:transformer`用于快速生成响应转换类
   - 优化了`php think make:middleware`生成文件内容
   - 移动了`public/index.php`部分代码到`bootstrap/start.php`
   
