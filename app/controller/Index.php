@@ -4,6 +4,7 @@ namespace app\controller;
 
 use app\event\Hello;
 use app\model\User;
+use app\request\HelloRequest;
 use app\service\HelloService;
 use app\transformer\UserItemTransformer;
 use app\transformer\UserTransformer;
@@ -15,8 +16,9 @@ use think\facade\Log;
 
 class Index extends Controller
 {
-    public function index()
+    public function index(HelloRequest $req)
     {
+        dd($req->cacheControl);
         // event(Hello::class,[new User(),5555]);
         return  $this->Ok("hello world");
     }

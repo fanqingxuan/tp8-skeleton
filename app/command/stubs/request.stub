@@ -1,0 +1,16 @@
+<?php
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use extend\core\Request;
+
+class {%className%} extends Request
+{
+    protected const DEFAULT_PARSE_METHOD = [];// 如果定义了的话就从这些方法中解析数据，否则根据请求metho从请求方法中解析
+
+    protected const USE_SNAKE_TO_CAMEL_CASE = false; // 是否开启将数据的下划线key解析到类的驼峰field上
+    
+    public $id; 
+
+}

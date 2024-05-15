@@ -52,9 +52,83 @@
   - 提供了中间件`AccessLog`,用于记录access请求日志
   - 去掉了`app/middleware.php`文件
   - 添加了`config/middleware.php`文件，用于声明全局中间件
+- 参数结构体
+  >支持将请求参数映射到类的属性上，便于约束和维护方法参数，增强可维护性，使用方法如下:
+
+  - 定义request类
+  ```php
+  namespace app\request;
+
+  use extend\core\Request;
+  use think\App;
+
+  class HelloRequest extends Request
+  {
+      protected const DEFAULT_PARSE_METHOD = ['HEAD','GET'];// 如果定义了的话就从这些方法中解析数据，否则根据请求metho从请求方法中解析
+
+      protected const USE_SNAKE_TO_CAMEL_CASE = true;
+      public $myId=55;
+      public $host;
+      public $cacheControl='status';    
+
+  }
+  ```
+  需要说明的是,必须继承`extend\core\Request`类;常量`DEFAULT_PARSE_METHOD`用于控制从什么数据源解析数据，当前支持从GET、POST、HEAD中解析数据,如果没有定义或者是空数组，则根据当前请求方式从对应的数据中解析，**注意当前只支持GET、POST**;常量`USE_SNAKE_TO_CAMEL_CASE`用于控制是否将下划线分隔的变量转换为驼峰命名的属性上
+  - 使用
+```php
+class Index extends Controller
+{
+    public function index(HelloRequest $req)
+    {
+        dd($req->cacheControl);
+    }
+}
+```
+单据看到了控制器参数灌入自定义的request类，然后方法体直接访问属性即可
+
+- 响应结构体
+  > 响应结构体是用来约束返回给前端页面的结构，主要目的是减少不必要的字段给前端，提高可维护性，使用方法如下:
+
+  - 定义响应结构体
+  ```php
+  namespace app\transformer;
+
+  use League\Fractal\TransformerAbstract;
+
+  class UserTransformer extends TransformerAbstract
+  {
+      public function transform($user)
+      {
+          return [
+              'id' => $user['id'],
+              'name' => $user['name'],
+          ];
+      }
+  }
+  ```
+  注意继承`League\Fractal\TransformerAbstract`类，然后重写`transform`方法，返回一个数组，数组中的key就是返回给前端页面的key，value就是返回给前端页面的value
+  - 控制器使用
+  ```php
+    class Index extends Controller
+    {
+        public function show() {
+            $user = [
+                'id'=>1,
+                'name'=>'thinkphp',
+                'age'=>18,
+                'address'=>'beijing',
+                'hobby'=>['football','basketball'],
+            ];
+            return $this->Ok($user,UserItemTransformer::class,false);
+        }
+    }
+  ```
+  `$this->Ok($user,UserItemTransformer::class,false);`方法有三个参数，第一个参数是要转换的数据，第二个参数是转换类，第三个参数是区分传入的数据是否二位数组，如果为true，则是二位数组，第三个参数的目的主要是控制用collection还是item转换器; 这里还有一个更灵活的兼容，如果Ok方法只传一个参数，则默认不使用任何转换器
+
 - 其它
   - `php think make:service`用于快速生成业务类
   - `php think make:transformer`用于快速生成响应转换类
+  - `php think make:request`用于快速生成参数转换类
   - 优化了`php think make:middleware`生成文件内容
   - 移动了`public/index.php`部分代码到`bootstrap/start.php`
   
