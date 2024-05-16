@@ -82,7 +82,7 @@ class Request extends ThinkRequest
         }
     }
 
-    function camelCaseToSnakeCase($camelCaseString) {
+    private function camelCaseToSnakeCase($camelCaseString) {
         // 使用 preg_replace 函数找到每个大写字母的前面，添加下划线
         $snakeCaseString = preg_replace('/([a-z])([A-Z])/', '$1_$2', $camelCaseString);
     
