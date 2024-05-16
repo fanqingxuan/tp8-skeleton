@@ -58,7 +58,7 @@ class Request extends ThinkRequest
         return $request;
     }
 
-    public function Validator() {
+    protected function Validator() {
         return '';
     }
 

@@ -4,7 +4,6 @@ namespace app\request;
 
 use app\request\validate\HelloValidate;
 use extend\core\Request;
-use think\App;
 
 class HelloRequest extends Request
 {
@@ -15,7 +14,7 @@ class HelloRequest extends Request
     public $id;
     public $userName;
 
-    public function Validator()
+    protected function Validator()
     {
         return HelloValidate::class;
     }
