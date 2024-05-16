@@ -18,7 +18,7 @@ class Index extends Controller
 {
     public function index(HelloRequest $req)
     {
-        dd($req->cacheControl);
+        dd($req->userName);
         // event(Hello::class,[new User(),5555]);
         return  $this->Ok("hello world");
     }

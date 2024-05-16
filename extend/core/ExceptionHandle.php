@@ -72,11 +72,14 @@ class ExceptionHandle extends Handle
      */
     public function render($request, Throwable $e): Response
     {
-        if ($this->app->isDebug()) {
-            return parent::render($request, $e);
-        }
         if ($e instanceof HttpException && $e->getStatusCode() == 404) {
             return json(Result::Fail('路由不存在',404)->toArray())->code(404);
+        }
+        if($e instanceof ValidateException) {
+            return json(Result::Fail($e->getMessage())->toArray());
+        }
+        if ($this->app->isDebug()) {
+            return parent::render($request, $e);
         }
         return json(Result::Fail('服务器内部错误',500)->toArray())->code(500);
     }

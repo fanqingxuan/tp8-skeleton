@@ -5,7 +5,9 @@ use ReflectionClass;
 use ReflectionProperty;
 use RuntimeException;
 use think\App;
+use think\exception\ValidateException;
 use think\Request as ThinkRequest;
+use think\Validate;
 
 // 应用请求对象类
 class Request extends ThinkRequest
@@ -56,6 +58,10 @@ class Request extends ThinkRequest
         return $request;
     }
 
+    public function Validator() {
+        return '';
+    }
+
 
 
     // 将request的字段解析到类属性中
@@ -66,8 +72,12 @@ class Request extends ThinkRequest
        // 创建一个反射类实例，用于ChildClass
         $reflection = new ReflectionClass($this);
         $data = $this->getTargetData();
+        $property_data = [];
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             if(!$property->isPublic()) {
+                continue;
+            }
+            if($property->getDeclaringClass()->getName() != get_class($this)) {
                 continue;
             }
             $fieldName = $property->getName();
@@ -78,6 +88,18 @@ class Request extends ThinkRequest
                 if(array_key_exists($newFieldName,$data)) {
                     $this->{$fieldName} = $data[$newFieldName];
                 }
+            }
+            $property_data[$fieldName] = $this->{$fieldName};
+        }
+        if($this->Validator()) {
+            if(!is_subclass_of($this->Validator(),Validate::class)) {
+                throw new RuntimeException('Validator must be subclass of think\Validate');
+            }
+            try {
+                validate($this->Validator())->batch(true)->check($property_data);
+            } catch (ValidateException $e) {
+                // 验证失败 输出错误信息
+                throw $e;
             }
         }
     }

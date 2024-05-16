@@ -67,25 +67,66 @@
       protected const DEFAULT_PARSE_METHOD = ['HEAD','GET'];// 如果定义了的话就从这些方法中解析数据，否则根据请求metho从请求方法中解析
 
       protected const USE_SNAKE_TO_CAMEL_CASE = true;
-      public $myId=55;
-      public $host;
-      public $cacheControl='status';    
+      public $id;
+      public $userName;  
 
   }
   ```
   需要说明的是,必须继承`extend\core\Request`类;常量`DEFAULT_PARSE_METHOD`用于控制从什么数据源解析数据，当前支持从GET、POST、HEAD中解析数据,如果没有定义或者是空数组，则根据当前请求方式从对应的数据中解析，**注意当前只支持GET、POST**;常量`USE_SNAKE_TO_CAMEL_CASE`用于控制是否将下划线分隔的变量转换为驼峰命名的属性上
-  - 使用
-```php
-class Index extends Controller
-{
-    public function index(HelloRequest $req)
-    {
-        dd($req->cacheControl);
-    }
-}
-```
-单据看到了控制器参数灌入自定义的request类，然后方法体直接访问属性即可
+  - 使用 
+  ```php
+  class Index extends Controller
+  {
+      public function index(HelloRequest $req)
+      {
+          dd($req->cacheControl);
+      }
+  }
+  ```
+  控制器参数灌入自定义的request类后，然后方法体内直接访问reqeuest对象的属性即可
+    
+  - 其它
+  request类支持参数验证，首先request类定义`Validator()`方法，返回继承`think\Validate`的子类字符串即可，如下
 
+  ```php
+    namespace app\request;
+
+    use app\request\validate\HelloValidate;
+    use extend\core\Request;
+
+    class HelloRequest extends Request
+    {
+        public $id;
+        public $userName;
+
+        public function Validator()
+        {
+            return HelloValidate::class;
+        }
+    }
+  ```
+  验证器类如下,就是`thinkphp`内置的验证器,验证器类会自动触发，无需手动添加check代码
+  ```php
+  <?php
+
+    namespace app\request\validate;
+
+    use think\Validate;
+
+    class HelloValidate extends Validate
+    {
+        protected $rule = [
+            'id' => 'require|number',
+            'userName' => 'require',
+        ];
+
+        protected $message = [
+            'id.require' => 'id不能为空',
+            'id.number' => 'id必须是数字',
+            'userName' => '名字不能为空',
+        ];
+    }
+  ```
 - 响应结构体
   > 响应结构体是用来约束返回给前端页面的结构，主要目的是减少不必要的字段给前端，提高可维护性，使用方法如下:
 
