@@ -97,29 +97,36 @@ abstract class Controller
         return $v->failException(true)->check($data);
     }
 
-
-    private function createData($resource,$transformClass='',$isCollection=true) {
-        if(!$transformClass) {
-            return $resource;
-        }
+    private function getTransformerClass($transformClass) {
         if(!class_exists($transformClass)) {
             throw new RuntimeException('transformClass类'.$transformClass.'不存在');
         }
         if(!is_subclass_of($transformClass,TransformerAbstract::class)) {
             throw new RuntimeException('transformClass类'.$transformClass.'必须继承 TransformerAbstract');
         }
-        if($isCollection) {
-            $resource = new Collection($resource,app()->make($transformClass));
-        } else {
-            $resource = new Item($resource,app()->make($transformClass));
-        }
-        $fractal = new Manager();
-        $fractal->setSerializer(new ArraySerializer());
-        return $fractal->createData($resource)->toArray();
+        return $transformClass;
     }
 
-    protected function Ok($resource,$transformClass='',$isCollection=true):Json {
-        return json(Result::Ok($this->createData($resource,$transformClass,$isCollection))->toArray());
+    private function getTransformerData($obj) {
+        $fractal = new Manager();
+        $fractal->setSerializer(new ArraySerializer());
+        return $fractal->createData($obj)->toArray();
+    }
+
+    protected function collection($resource,$transformClass) {
+        $transformClass = $this->getTransformerClass($transformClass);
+        $resourceObj = new Collection($resource,app()->make($transformClass));
+        return $this->getTransformerData($resourceObj);
+    }
+
+    protected function item($resource,$transformClass) {
+        $transformClass = $this->getTransformerClass($transformClass);
+        $resourceObj = new Item($resource,app()->make($transformClass));
+        return $this->getTransformerData($resourceObj);
+    }
+
+    protected function Ok($data,$message='操作成功'):Json {
+        return json(Result::Ok($data,$message)->toArray());
     }
 
     protected function Fail(string $message,int $code = Result::FAIL_CODE):Json {

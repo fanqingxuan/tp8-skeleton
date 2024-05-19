@@ -23,8 +23,9 @@ class Index extends Controller
         return  $this->Ok("hello world");
     }
 
-    public function hello($name = 'ThinkPHP8')
+    public function hello($name)
     {
+        dd($name);
         MYLog::info("hello world",[11,22,33,44]);
         return $this->Ok([1,2,3,3,5]);
     }
@@ -37,7 +38,7 @@ class Index extends Controller
             'address'=>'beijing',
             'hobby'=>['football','basketball'],
         ];
-        return $this->Ok($user,UserItemTransformer::class,false);
+        return $this->Ok($this->item($user,UserItemTransformer::class));
     }
 
     public function list()
@@ -47,7 +48,7 @@ class Index extends Controller
             ['id'=>2,'name'=>'hyperf','age'=>19],
             ['id'=>3,'name'=>'swoole','age'=>20],
         ];
-        return $this->Ok($userlist,UserTransformer::class);
+        return $this->Ok($this->collection($userlist,UserTransformer::class));
     }
 
     public function test(HelloService $helloService)
