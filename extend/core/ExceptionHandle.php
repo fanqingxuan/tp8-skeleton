@@ -1,6 +1,7 @@
 <?php
 namespace extend\core;
 
+use app\exception\BaseException;
 use Exception;
 use extend\Result;
 use think\db\exception\DataNotFoundException;
@@ -78,6 +79,10 @@ class ExceptionHandle extends Handle
         if($e instanceof ValidateException) {
             return json(Result::Fail($e->getMessage())->toArray());
         }
+        if($e instanceof BaseException) {
+            return json(Result::Fail($e->getMessage())->toArray());
+        }
+        
         if ($this->app->isDebug()) {
             return parent::render($request, $e);
         }

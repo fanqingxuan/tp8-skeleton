@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\event\Hello;
+use app\exception\MYException;
 use app\model\User;
 use app\request\HelloRequest;
 use app\service\HelloService;
@@ -19,13 +20,15 @@ class Index extends Controller
     public function index(HelloRequest $req)
     {
         dd($req->userName);
+        MYException::trigger("测试异常");
         // event(Hello::class,[new User(),5555]);
         return  $this->Ok("hello world");
     }
 
     public function hello($name)
     {
-        dd($name);
+        MYException::trigger("测试异常");
+
         MYLog::info("hello world",[11,22,33,44]);
         return $this->Ok([1,2,3,3,5]);
     }
