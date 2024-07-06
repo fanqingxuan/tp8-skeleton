@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\event\Hello;
+use app\event\HelloEvent;
 use app\exception\MYException;
 use app\model\User;
 use app\request\HelloRequest;
@@ -15,12 +16,12 @@ use extend\Result;
 use think\facade\Db;
 use think\facade\Log;
 
-class Index extends Controller
+class IndexController extends Controller
 {
     public function index(HelloRequest $req)
     {
         // MYException::trigger("测试异常");
-        event(Hello::class,['aaaa',5555]);
+        event(HelloEvent::class,['aaaa',5555]);
         return  $this->Ok("hello world");
     }
 
