@@ -5,6 +5,6 @@ use app\listener\Hello as ListenerHello;
 
 return [
     Hello::class    =>  [
-        ListenerHello::class
+        ListenerHello::class,
     ]
 ];

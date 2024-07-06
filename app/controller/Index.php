@@ -19,9 +19,8 @@ class Index extends Controller
 {
     public function index(HelloRequest $req)
     {
-        dd($req->userName);
-        MYException::trigger("测试异常");
-        // event(Hello::class,[new User(),5555]);
+        // MYException::trigger("测试异常");
+        event(Hello::class,['aaaa',5555]);
         return  $this->Ok("hello world");
     }
 

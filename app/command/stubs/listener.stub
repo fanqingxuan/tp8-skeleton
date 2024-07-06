@@ -1,9 +1,9 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\listener;
+namespace {%namespace%};
 
-class Hello
+class {%className%}
 {
     /**
      * 事件监听处理
@@ -12,6 +12,6 @@ class Hello
      */
     public function handle($payload)
     {
-        dump($payload);
+        //
     }
 }
