@@ -1,10 +1,10 @@
 <?php
 
-use app\event\Hello;
-use app\listener\Hello as ListenerHello;
+use app\event\HelloEvent;
+use app\listener\HelloListener;
 
 return [
-    Hello::class    =>  [
-        ListenerHello::class,
+    HelloEvent::class   =>  [
+        HelloListener::class,
     ]
 ];
