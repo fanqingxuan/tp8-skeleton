@@ -41,7 +41,7 @@ class Index extends Controller
             'address'=>'beijing',
             'hobby'=>['football','basketball'],
         ];
-        return $this->Ok($this->item($user,UserItemTransformer::class));
+        return $this->OkItem($user,UserItemTransformer::class);
     }
 
     public function list()
@@ -51,7 +51,7 @@ class Index extends Controller
             ['id'=>2,'name'=>'hyperf','age'=>19],
             ['id'=>3,'name'=>'swoole','age'=>20],
         ];
-        return $this->Ok($this->collection($userlist,UserTransformer::class));
+        return $this->OkCollection($userlist,UserTransformer::class);
     }
 
     public function test(HelloService $helloService)

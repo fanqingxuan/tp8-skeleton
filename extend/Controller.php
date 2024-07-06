@@ -113,13 +113,13 @@ abstract class Controller
         return $fractal->createData($obj)->toArray();
     }
 
-    protected function collection($resource,$transformClass) {
+    private function collection($resource,$transformClass) {
         $transformClass = $this->getTransformerClass($transformClass);
         $resourceObj = new Collection($resource,app()->make($transformClass));
         return $this->getTransformerData($resourceObj);
     }
 
-    protected function item($resource,$transformClass) {
+    private function item($resource,$transformClass) {
         $transformClass = $this->getTransformerClass($transformClass);
         $resourceObj = new Item($resource,app()->make($transformClass));
         return $this->getTransformerData($resourceObj);
@@ -127,6 +127,14 @@ abstract class Controller
 
     protected function Ok($data,$message='操作成功'):Json {
         return json(Result::Ok($data,$message)->toArray());
+    }
+
+    protected function OkItem($resource,$transformClass):Json {
+        return $this->Ok($this->item($resource,$transformClass));
+    }
+
+    protected function OkCollection($resource,$transformClass):Json {
+        return $this->Ok($this->collection($resource,$transformClass));
     }
 
     protected function Fail(string $message,int $code = Result::FAIL_CODE):Json {

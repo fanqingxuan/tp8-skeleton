@@ -160,7 +160,7 @@
                 'address'=>'beijing',
                 'hobby'=>['football','basketball'],
             ];
-            return $this->Ok($user,UserItemTransformer::class,false);
+            return $this->OkItem($user,UserItemTransformer::class);
         }
     }
   ```
