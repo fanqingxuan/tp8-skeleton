@@ -22,7 +22,7 @@ class IndexController extends Controller
     {
         // MYException::trigger("测试异常");
         event(HelloEvent::class,['aaaa',5555]);
-        return  $this->Ok("hello world");
+        return  $this->Ok($req->get());
     }
 
     public function hello($name)

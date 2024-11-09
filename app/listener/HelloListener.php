@@ -12,6 +12,6 @@ class HelloListener
      */
     public function handle($payload)
     {
-        dump($payload);
+        // dump($payload);
     }
 }

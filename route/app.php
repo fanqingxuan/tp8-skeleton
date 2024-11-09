@@ -18,14 +18,14 @@ Route::get('/','index/index');
 Route::get('/show',[IndexController::class,'show']);
 
 Route::get('think', function () {
-    return 'hello,ThinkPHP6!';
+    return 'hello,ThinkPHP8!';
 });
 Route::get('hello/test', [IndexController::class,'test']);
 Route::get('/hello',[IndexController::class,'hello']);
 
 // Route::get('hello/:name', 'index/hello');
 
-Route::get("/list",[IndexController::class,'index']);
+Route::get("/list",[IndexController::class,'list']);
 
 Route::miss(function () {
     return json(Result::fail("页面不存在",404)->toArray())->code(404);

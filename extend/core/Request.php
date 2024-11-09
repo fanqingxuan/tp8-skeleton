@@ -13,7 +13,7 @@ use think\Validate;
 class Request extends ThinkRequest
 {
 
-     // 如果定义了的话就从这些方法中解析数据，否则根据请求metho从请求方法中解析
+     // 如果定义了的话就从这些方法中解析数据，否则根据请求method从请求方法中解析
     protected const DEFAULT_PARSE_METHOD = [];
 
     // 支持将数据是长蛇格式的数据键值映射到驼峰模式类属性
