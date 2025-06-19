@@ -34,7 +34,7 @@
             "app\\": "app"
         },
         "psr-0": {
-            "": "extend/"
+            "support\\": "support/"
         }
     },
     "config": {
