@@ -3,8 +3,9 @@
 namespace app\controller;
 
 use app\BaseController;
+use support\BaseController as SupportBaseController;
 
-class Index extends BaseController
+class IndexController extends SupportBaseController
 {
     public function index()
     {
@@ -14,5 +15,9 @@ class Index extends BaseController
     public function hello($name = 'ThinkPHP8')
     {
         return 'hello,' . $name;
+    }
+
+    public function say() {
+        dump($this->request);
     }
 }

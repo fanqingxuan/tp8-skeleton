@@ -27,7 +27,7 @@ return [
     // 空控制器名
     'empty_controller'      => 'Error',
     // 是否使用控制器后缀
-    'controller_suffix'     => false,
+    'controller_suffix'     => true,
     // 默认模块名（开启自动多模块有效）
     'default_module'        => 'index',
     // 默认控制器名

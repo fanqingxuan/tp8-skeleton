@@ -8,10 +8,16 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+use app\controller\IndexController;
 use think\facade\Route;
 
 Route::get('think', function () {
     return 'hello,ThinkPHP8!';
 });
 
+Route::get("/say",[IndexController::class,"say"]);
+
 Route::get('hello/:name', 'index/hello');
+
+

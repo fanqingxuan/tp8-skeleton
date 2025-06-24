@@ -31,10 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "app\\": "app"
-        },
-        "psr-0": {
-            "support\\": "support/"
+            "app\\": "app",
+            "support\\": "support"
         }
     },
     "config": {
