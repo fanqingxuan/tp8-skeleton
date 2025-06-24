@@ -15,8 +15,10 @@ use think\App;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+/** @var App $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
 // 执行HTTP应用并响应
-$http = (new App())->http;
+$http = $app->http;
 
 $response = $http->run();
 

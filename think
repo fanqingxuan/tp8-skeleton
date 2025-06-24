@@ -7,5 +7,8 @@ use think\App;
 // 加载基础文件
 require __DIR__ . '/vendor/autoload.php';
 
+/** @var App $app */
+$app = require_once __DIR__.'/bootstrap/app.php';
+
 // 应用初始化
-(new App())->console->run();
+$app->console->run();

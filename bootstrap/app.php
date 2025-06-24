@@ -1,12 +1,15 @@
 <?php
 
-
-// 容器Provider定义文件
-
 use support\ExceptionHandle;
 use support\Request;
+use think\App;
 
-return [
+$app = new App();
+
+$bind = [
     'think\Request'          => Request::class,
     'think\exception\Handle' => ExceptionHandle::class,
 ];
+$app->bind($bind);
+
+return $app;
