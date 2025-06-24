@@ -1,10 +1,10 @@
 <?php
 
+use support\Application;
 use support\ExceptionHandle;
 use support\Request;
-use think\App;
 
-$app = new App();
+$app = new Application();
 
 $bind = [
     'think\Request'          => Request::class,
