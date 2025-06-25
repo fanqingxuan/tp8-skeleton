@@ -26,7 +26,7 @@ class RequestVo extends ValueObject {
         }
     }
 
-    protected function getRequest():Request {
+    public function getRequest():Request {
         return  App::make(Request::class);
     }
 
