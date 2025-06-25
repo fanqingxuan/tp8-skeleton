@@ -6,7 +6,7 @@ use think\Console as ThinkConsole;
 
 class Console extends ThinkConsole {
 
-    protected $commands = [
+    protected $_commands = [
         Request::class
     ];
     /**
@@ -22,7 +22,7 @@ class Console extends ThinkConsole {
     }
 
     protected function loadCommandsByDirectory() {
-        $this->addCommands($this->commands);
+        $this->addCommands($this->_commands);
 
         $file_list = glob($this->app->getAppPath()."command/*.php");
         $path = $this->app->getRootPath();
