@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\BaseController;
+use app\request\HelloRequest;
 use support\BaseController as SupportBaseController;
 
 class IndexController extends SupportBaseController
@@ -17,7 +18,7 @@ class IndexController extends SupportBaseController
         return 'hello,' . $name;
     }
 
-    public function say() {
-        dump($this->request);
+    public function say(HelloRequest $request) {
+        dump($request);
     }
 }
