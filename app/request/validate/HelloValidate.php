@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\validate;
+namespace app\request\validate;
 
 use think\Validate;
 
@@ -15,7 +15,7 @@ class HelloValidate extends Validate
      */
     protected $rule = [
         'name'  =>  'require|min:3',
-        "age"   =>  'require|max:100',
+        "age"   =>  'require|lt:100',
     ];
 
     /**

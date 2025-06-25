@@ -2,7 +2,7 @@
 
 namespace app\request;
 
-use app\validate\HelloValidate;
+use app\request\validate\HelloValidate;
 use support\RequestVo;
 
 class HelloRequest extends RequestVo{
