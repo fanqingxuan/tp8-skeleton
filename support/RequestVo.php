@@ -1,8 +1,10 @@
 <?php
 namespace support;
 
+use think\exception\ValidateException;
 use think\facade\App;
 use think\Request;
+use think\Validate;
 
 class RequestVo extends ValueObject {
 
@@ -14,29 +16,36 @@ class RequestVo extends ValueObject {
 
     public function __construct(array $data = [])
     {
-        switch(static::DEFAULT_PARSE_TYPE) {
-            case self::PARSE_FROM_GET:
-                $this->parseFromQuery();
-                break;
-            case self::PARSE_FROM_POST: 
-                $this->parseFromPost();
-                break;
-            default:
-                $this->parse();
-        }
+        
+        $this->handleValidate();
+        parent::__construct($this->getDataFromRequest());
     }
 
     public function getRequest():Request {
         return  App::make(Request::class);
     }
 
-    protected function parse() {
-        $this->initialize($this->getRequest()->param());
+    protected function getDataFromRequest():array {
+        switch(static::DEFAULT_PARSE_TYPE) {
+            case self::PARSE_FROM_GET:
+                $data = $this->getRequest()->get();
+                break;
+            case self::PARSE_FROM_POST: 
+                $data = $this->getRequest()->post();
+                break;
+            default:
+                $data = $this->getRequest()->param();
+        }
+        return $data;
+        
     }
-    protected function parseFromPost() {
-        $this->initialize($this->getRequest()->post());
-    }
-    protected function parseFromQuery() {
-        $this->initialize($this->getRequest()->get());
+
+    protected function handleValidate() {
+        if(method_exists($this,'validate')) {
+            $class = $this->validate();
+            if($class && is_subclass_of($class,Validate::class)) {
+                validate($class)->batch(true)->check($this->getDataFromRequest());
+            }
+        }
     }
 }

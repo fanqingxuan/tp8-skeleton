@@ -19,6 +19,6 @@ class IndexController extends SupportBaseController
     }
 
     public function say(HelloRequest $request) {
-        dump($request);
+        dump($request->getRequest());
     }
 }
