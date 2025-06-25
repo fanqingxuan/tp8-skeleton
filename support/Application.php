@@ -7,7 +7,7 @@ use think\App;
 class Application extends App {
 
 
-     /**
+    /**
      * 加载应用文件和配置
      * @access protected
      * @return void
