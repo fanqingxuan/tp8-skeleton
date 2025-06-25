@@ -1,11 +1,11 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\request;
+namespace {%namespace%};
 
 use support\RequestVo;
 
-class HelloRequest extends RequestVo
+class {%className%} extends RequestVo
 {
     /**
      * @var string

@@ -1,10 +1,14 @@
 <?php
 namespace support;
 
+use support\command\Request;
 use think\Console as ThinkConsole;
 
 class Console extends ThinkConsole {
 
+    protected $commands = [
+        Request::class
+    ];
     /**
      * 加载指令
      * @access protected
@@ -18,6 +22,8 @@ class Console extends ThinkConsole {
     }
 
     protected function loadCommandsByDirectory() {
+        $this->addCommands($this->commands);
+
         $file_list = glob($this->app->getAppPath()."command/*.php");
         $path = $this->app->getRootPath();
         $command_list = array_map(function($file) use ($path) {
