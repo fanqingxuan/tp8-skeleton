@@ -8,7 +8,7 @@ use support\RequestVo;
 class HelloReq extends RequestVo
 {
     /**
-     * @var string
+     * @var string[]
      * @field user_name
      */
     public $name;
