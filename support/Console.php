@@ -17,14 +17,19 @@ class Console extends ThinkConsole {
     {
         parent::loadCommands();
 
-        $this->loadCommandsByDirectory();
+        $this->loadUserCommands(__DIR__."/command");
+        $this->loadUserCommands($this->app->getAppPath()."command");
 
     }
 
-    protected function loadCommandsByDirectory() {
-        $this->addCommands($this->_commands);
 
-        $file_list = glob($this->app->getAppPath()."command/*.php");
+
+    protected function loadUserCommands(string $dir) {
+        if(!$dir){
+            return;
+        }
+        $_dir = rtrim($dir,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $file_list = glob($_dir."*.php");
         $path = $this->app->getRootPath();
         $command_list = array_map(function($file) use ($path) {
             return str_replace(
@@ -33,9 +38,10 @@ class Console extends ThinkConsole {
                 $file
             );
         },$file_list);
-        if($command_list) {
-            $this->addCommands($command_list);
+        if(!$command_list) {
+            return;
         }
+        $this->addCommands($command_list);
     }
 
 }

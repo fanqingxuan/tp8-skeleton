@@ -2,11 +2,11 @@
 
 namespace app\controller;
 
-use app\BaseController;
-use app\request\HelloRequest;
-use support\BaseController as SupportBaseController;
+use app\request\HelloReq;
+use app\transformer\HelloTransformer;
+use support\ResponseUtil;
 
-class IndexController extends SupportBaseController
+class IndexController 
 {
     public function index()
     {
@@ -18,7 +18,11 @@ class IndexController extends SupportBaseController
         return 'hello,' . $name;
     }
 
-    public function say(HelloRequest $request) {
-        dump($request);
+    public function say(HelloReq $req) {
+        $list = [
+            ['name'=>'张三','age'=>43,'info'=>'河北'],
+            ['name'=>'李四','age'=>32,'info'=>'山西'],
+        ];
+        dump(ResponseUtil::collection($list,HelloTransformer::class,['total'=>43]));
     }
 }

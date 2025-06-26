@@ -1,0 +1,16 @@
+<?php
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use support\Transformer;
+
+class {%className%} extends Transformer
+{
+    public function transform($book)
+	{
+	    return [
+	        'id'=>1,
+	    ];
+	}
+}

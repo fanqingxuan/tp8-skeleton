@@ -5,7 +5,7 @@ namespace app\request;
 
 use support\RequestVo;
 
-class HelloRequest extends RequestVo
+class HelloReq extends RequestVo
 {
     /**
      * @var string
