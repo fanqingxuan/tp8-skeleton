@@ -19,10 +19,6 @@ class IndexController
     }
 
     public function say(HelloReq $req) {
-        $list = [
-            ['name'=>'张三','age'=>43,'info'=>'河北'],
-            ['name'=>'李四','age'=>32,'info'=>'山西'],
-        ];
-        dump(ResponseUtil::collection($list,HelloTransformer::class,['total'=>43]));
+        dump(ResponseUtil::collection($req->books??[],HelloTransformer::class,['total'=>43]));
     }
 }

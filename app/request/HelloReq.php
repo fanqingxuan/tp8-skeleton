@@ -13,6 +13,12 @@ class HelloReq extends RequestVo
      */
     public $name;
 
+    /**
+     *
+     * @var \app\vo\Book[]
+     */
+    public $books;
+
     // 验证器类
     public function validate():string {
         return '';
