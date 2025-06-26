@@ -1,6 +1,10 @@
 <?php
 namespace support;
 
+use support\exception\EnumValueException;
+
+// 新增自定义异常，放在类外部
+
 abstract class ValueObject {
     
     /**
@@ -106,6 +110,15 @@ abstract class ValueObject {
     }
     
     /**
+     * 判断类型是否为枚举
+     * @param string $type
+     * @return bool
+     */
+    protected function isEnumType($type) {
+        return class_exists($type) && enum_exists($type);
+    }
+    
+    /**
      * 处理嵌套对象
      * @param mixed $value
      * @param \ReflectionProperty $property
@@ -116,6 +129,37 @@ abstract class ValueObject {
         $type = $this->getPropertyType($property);
         
         if ($type) {
+            // 新增：枚举类型处理
+            if ($this->isEnumType($type)) {
+                // 如果是枚举类型且传入的是数组，但类型声明不是数组，取第一个元素
+                if (is_array($value)) {
+                    if (empty($value)) {
+                        return null;
+                    }
+                    if (count($value) > 1) {
+                        throw new EnumValueException("属性类型为单个枚举 {$type}，但传入了多个值: " . implode(',', $value));
+                    }
+                    $value = $value[0]; // 取第一个元素
+                }
+                // 如果是枚举类型且传入的是标量，则自动转换
+                if (is_scalar($value) && !($value instanceof $type)) {
+                    if (method_exists($type, 'tryFrom')) {
+                        $enum = $type::tryFrom($value);
+                        if ($enum === null) {
+                            throw new EnumValueException("无效的枚举值: {$value} for {$type}");
+                        }
+                        return $enum;
+                    } elseif (method_exists($type, 'from')) {
+                        try {
+                            return $type::from($value);
+                        } catch (\ValueError $e) {
+                            throw new EnumValueException("无效的枚举值: {$value} for {$type}", 0, $e);
+                        }
+                    }
+                }
+                // 已经是枚举对象，直接返回
+                return $value;
+            }
             // 检查是否是数组类型：ClassName[] 或 array<ClassName>
             if (preg_match('/^(.+)\[\]$/', $type, $arrayMatches)) {
                 // 处理 ClassName[] 格式
@@ -157,7 +201,6 @@ abstract class ValueObject {
                 }
             }
         }
-        
         return $value;
     }
     
@@ -235,9 +278,27 @@ abstract class ValueObject {
      */
     protected function createTypedArray($dataArray, $elementType) {
         $result = [];
-        
         foreach ($dataArray as $item) {
-            if ($this->isCustomClass($elementType)) {
+            if ($this->isEnumType($elementType)) {
+                // 自动转换为枚举对象
+                if (is_scalar($item) && !($item instanceof $elementType)) {
+                    if (method_exists($elementType, 'tryFrom')) {
+                        $enum = $elementType::tryFrom($item);
+                        if ($enum === null) {
+                            throw new EnumValueException("无效的枚举值: {$item} for {$elementType}");
+                        }
+                        $result[] = $enum;
+                    } elseif (method_exists($elementType, 'from')) {
+                        try {
+                            $result[] = $elementType::from($item);
+                        } catch (\ValueError $e) {
+                            throw new EnumValueException("无效的枚举值: {$item} for {$elementType}", 0, $e);
+                        }
+                    }
+                } else {
+                    $result[] = $item;
+                }
+            } elseif ($this->isCustomClass($elementType)) {
                 // 自定义类型：创建对象
                 if (is_array($item)) {
                     $obj = $this->createNestedObject($item, $elementType);
@@ -250,7 +311,6 @@ abstract class ValueObject {
                 $result[] = $this->convertBasicType($item, $elementType);
             }
         }
-        
         return $result;
     }
 
@@ -399,7 +459,12 @@ abstract class ValueObject {
         
         // 尝试解析JSON
         json_decode($string);
-        return json_last_error() === JSON_ERROR_NONE;
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // JSON解析失败，抛出异常
+            throw new \InvalidArgumentException("JSON解析失败: " . json_last_error_msg() . "，原始值: " . $string);
+        }
+        
+        return true;
     }
     
     /**
@@ -436,6 +501,25 @@ abstract class ValueObject {
         $type = $this->getPropertyType($property);
         
         if ($type) {
+            // 新增：枚举类型处理
+            if ($this->isEnumType($type)) {
+                if (is_scalar($value) && !($value instanceof $type)) {
+                    if (method_exists($type, 'tryFrom')) {
+                        $enum = $type::tryFrom($value);
+                        if ($enum === null) {
+                            throw new EnumValueException("无效的枚举值: {$value} for {$type}");
+                        }
+                        return $enum;
+                    } elseif (method_exists($type, 'from')) {
+                        try {
+                            return $type::from($value);
+                        } catch (\ValueError $e) {
+                            throw new EnumValueException("无效的枚举值: {$value} for {$type}", 0, $e);
+                        }
+                    }
+                }
+                return $value;
+            }
             // 排除数组类型标记：ClassName[] 或 array<ClassName>
             if (preg_match('/^(.+)\[\]$/', $type, $arrayMatches)) {
                 return $value; // 数组类型已在 handleNestedObject 中处理
@@ -455,9 +539,13 @@ abstract class ValueObject {
                 case 'boolean':
                     return $this->convertToBool($value);
                 case 'array':
+                    // 如果传入的是字符串，按逗号拆分
+                    if (is_string($value)) {
+                        return $this->convertToArray($value);
+                    }
                     return is_array($value) ? $value : (empty($value) ? [] : [$value]);
                 case 'string':
-                    return is_string($value) ? trim($value) : (string) $value;
+                    return is_string($value) ? trim($value) : (is_array($value)?implode(',',$value):(string) $value);
             }
         }
         
