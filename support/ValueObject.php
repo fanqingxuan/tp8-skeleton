@@ -262,11 +262,6 @@ abstract class ValueObject {
             return new $className($data);
         }
         
-        // 尝试直接使用类名
-        if (class_exists($className)) {
-            return new $className($data);
-        }
-        
         return $data;
     }
     
@@ -304,7 +299,8 @@ abstract class ValueObject {
                     $obj = $this->createNestedObject($item, $elementType);
                     $result[] = $obj;
                 } else {
-                    $result[] = $item;
+                    // 如果不是数组，抛出异常
+                    throw new \InvalidArgumentException("类型声明为 {$elementType}，但传入的数据不是数组: " . json_encode($item, JSON_UNESCAPED_UNICODE));
                 }
             } else {
                 // 基础类型：进行类型转换

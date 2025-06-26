@@ -19,7 +19,6 @@ class IndexController
     }
 
     public function say(HelloReq $req) {
-        dd($req->books);
         return ResponseUtil::collection($req->books??[],HelloTransformer::class,['total'=>43]);
     }
 }

@@ -15,7 +15,7 @@ class HelloReq extends RequestVo
 
     /**
      *
-     * @var \app\vo\Book[]
+     * @var string
      */
     public $books;
 
