@@ -5,6 +5,7 @@ namespace support;
 use think\App;
 use think\Console as BaseConsole;
 use think\exception\Handle;
+use think\Http as BaseHttp;
 use think\Request as BaseRequest;
 
 class Application extends App {
@@ -13,6 +14,7 @@ class Application extends App {
         BaseRequest::class          => Request::class,
         Handle::class => ExceptionHandle::class,
         BaseConsole::class   =>  Console::class,
+        BaseHttp::class=>Http::class
     ];
     /**
      * 架构方法

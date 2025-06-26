@@ -19,6 +19,6 @@ class IndexController
     }
 
     public function say(HelloReq $req) {
-        dump(ResponseUtil::collection($req->books??[],HelloTransformer::class,['total'=>43]));
+        return ResponseUtil::collection($req->books??[],HelloTransformer::class,['total'=>43]);
     }
 }
