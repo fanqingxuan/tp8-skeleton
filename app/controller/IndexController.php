@@ -2,6 +2,7 @@
 
 namespace app\controller;
 
+use app\model\User;
 use app\request\HelloReq;
 use app\transformer\HelloTransformer;
 use support\ResponseUtil;
