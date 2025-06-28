@@ -14,7 +14,7 @@ class {%className%} extends RequestVo
     public $name;
 
     // 验证器类
-    public function validate():string {
+    public function validator():string {
         return '';
     }
 }

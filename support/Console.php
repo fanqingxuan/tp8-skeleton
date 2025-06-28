@@ -5,10 +5,6 @@ use support\command\Request;
 use think\Console as ThinkConsole;
 
 class Console extends ThinkConsole {
-
-    protected $_commands = [
-        Request::class
-    ];
     /**
      * 加载指令
      * @access protected
