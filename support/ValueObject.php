@@ -18,12 +18,13 @@ abstract class ValueObject {
      * @param array $data 请求数据
      */
     public function __construct(array $data = []) {
+        $this->rawData = $data;
+        $this->fill($data);
         $this->initialize($data);
     }
 
     public function initialize(array $data = []) {
-        $this->rawData = $data;
-        $this->fill($data);
+        
     }
     
     /**

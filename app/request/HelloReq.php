@@ -8,19 +8,30 @@ use support\RequestVo;
 class HelloReq extends RequestVo
 {
     /**
-     * @var string[]
+     * @var string
      * @field user_name
      */
     public $name;
 
     /**
      *
-     * @var string
+     * @var \app\vo\Book[]
      */
     public $books;
 
+    /**
+     *
+     * @var null|UploadedFile
+     */
+    public $image;
+
+    public function initialize(array $data = [])
+    {
+        $this->image = $this->getRequest()->file("image");
+    }
+
     // 验证器类
-    public function validate():string {
+    public function validator():string {
         return '';
     }
 }

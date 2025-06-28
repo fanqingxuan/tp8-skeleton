@@ -14,7 +14,7 @@ class Book extends ValueObject{
 
     /**
      *
-     * @var \app\enums\Status[]
+     * @var \app\enums\Status
      */
     public $status;
 }

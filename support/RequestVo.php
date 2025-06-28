@@ -41,8 +41,8 @@ class RequestVo extends ValueObject {
     }
 
     protected function handleValidate() {
-        if(method_exists($this,'validate')) {
-            $class = $this->validate();
+        if(method_exists($this,'validator')) {
+            $class = $this->validator();
             if($class && is_subclass_of($class,Validate::class)) {
                 validate($class)->batch(true)->check($this->getDataFromRequest());
             }
