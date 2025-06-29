@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app\request;
 
+use app\request\validate\HelloValidate;
 use support\RequestVo;
 
 class HelloReq extends RequestVo
@@ -32,6 +33,6 @@ class HelloReq extends RequestVo
 
     // 验证器类
     public function validator():string {
-        return '';
+        return HelloValidate::class;
     }
 }

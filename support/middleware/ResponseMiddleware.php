@@ -18,7 +18,8 @@ class ResponseMiddleware {
         $response = $next($request);
         $data = $response->getData();
         if($data instanceof Result) {
-            return json($data->toArray());
+            $code = $data->getCode();
+            return json($data->toArray())->code($code);
         }
         return $response;
     }
