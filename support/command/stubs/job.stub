@@ -1,0 +1,14 @@
+<?php
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use support\BaseJob;
+use think\queue\Job;
+
+class {%className%} extends BaseJob
+{
+    public function handle(Job $job, $data) {
+
+    }
+}
