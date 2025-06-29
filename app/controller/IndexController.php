@@ -2,6 +2,7 @@
 
 namespace app\controller;
 
+use app\event\HelloEvent;
 use app\model\User;
 use app\request\HelloReq;
 use app\transformer\HelloTransformer;
@@ -18,12 +19,11 @@ class IndexController
 
     public function hello($name = 'ThinkPHP8')
     {
-        throw new BusinessException("测试错误");
         return 'hello,' . $name;
     }
 
     public function say(HelloReq $req) {
-        DB::table("HELLO")->findOrFail();
+        HelloEvent::dispatch(['payload'=>'hellodddd']);
         return ResponseUtil::collection($req->books??[],HelloTransformer::class,['total'=>43]);
     }
 }
